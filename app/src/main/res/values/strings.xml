@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SampleCalenderApp</string>
+    <string name="save_in_selected_calender">Save event in selected calender</string>
+</resources>
