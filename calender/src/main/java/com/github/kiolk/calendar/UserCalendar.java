@@ -1,15 +1,32 @@
 package com.github.kiolk.calendar;
 
-public class UserCalendar {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private long id = 0;
-    private String displayName = null;
-    private String accountName = null;
-    private String ownerName = null;
-    private int accessLevel = 0;
-    private int visibility = 0;
-    private int canOrganiserRespond = 0;
-    private int isSyncEvent = 0;
+public class UserCalendar implements Parcelable{
+
+    private long id;
+    private String displayName;
+    private String accountName;
+    private String ownerName;
+    private int accessLevel;
+    private int visibility;
+    private int canOrganiserRespond;
+    private int isSyncEvent;
+
+    public UserCalendar() {
+    }
+
+    protected UserCalendar(Parcel in) {
+        id = in.readLong();
+        displayName = in.readString();
+        accountName = in.readString();
+        ownerName = in.readString();
+        accessLevel = in.readInt();
+        visibility = in.readInt();
+        canOrganiserRespond = in.readInt();
+        isSyncEvent = in.readInt();
+    }
 
     public int getAccessLevel() {
         return accessLevel;
@@ -74,5 +91,35 @@ public class UserCalendar {
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
     }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(displayName);
+        dest.writeString(accountName);
+        dest.writeString(ownerName);
+        dest.writeInt(accessLevel);
+        dest.writeInt(visibility);
+        dest.writeInt(canOrganiserRespond);
+        dest.writeInt(isSyncEvent);
+    }
+
+    public static final Creator<UserCalendar> CREATOR = new Creator<UserCalendar>() {
+
+        @Override
+        public UserCalendar createFromParcel(Parcel in) {
+            return new UserCalendar(in);
+        }
+
+        @Override
+        public UserCalendar[] newArray(int size) {
+            return new UserCalendar[size];
+        }
+    };
 }
 
