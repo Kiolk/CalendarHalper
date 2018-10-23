@@ -1,5 +1,9 @@
 package kiolk.github.com.samplecalenderapp;
 
+import com.github.kiolk.calendar.models.EventEnd;
+import com.github.kiolk.calendar.models.EventStart;
+import com.github.kiolk.calendar.models.EventType;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,10 +22,20 @@ public class Messages implements Serializable {
     private Date createdAt;
     private Date updatedAt;
     private String messageType;
+
+    @EventType
     private String topic;
-    private Date dueDate;
+
     private Date startDate;
+
+    @EventStart
+    private Long startEvent = startDate.getTime();
+
     private Date endDate;
+
+    @EventEnd
+    private  Long endEvent = endDate.getTime();
+    private Date dueDate;
     private Date oldTime;
     private Date newTime;
     private String schoolClassId;

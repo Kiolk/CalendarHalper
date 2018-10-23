@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.github.kiolk.calendar.CalendarEvent;
+import com.github.kiolk.calendar.models.CalendarEvent;
 import com.github.kiolk.calendar.CalendarManager;
 
 import java.util.Date;
@@ -120,7 +120,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 .addContent(messages.getContent())
                 .build();
 
-        CalendarManager.addEventToCalender(getBaseContext(), event, TimeZone.getDefault().getDisplayName());
+//        CalendarManager.addEventToCalender(getBaseContext(), event, TimeZone.getDefault().getDisplayName());
+        CalendarManager.addEventToCalender(getBaseContext(), messages, TimeZone.getDefault().getDisplayName());
     }
 
     private Messages getTestMessages(){

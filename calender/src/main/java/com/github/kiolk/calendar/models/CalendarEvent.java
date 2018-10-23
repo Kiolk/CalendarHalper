@@ -1,4 +1,4 @@
-package com.github.kiolk.calendar;
+package com.github.kiolk.calendar.models;
 
 import android.support.annotation.NonNull;
 

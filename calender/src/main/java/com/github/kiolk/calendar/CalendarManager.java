@@ -12,7 +12,17 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.util.Log;
 
+import com.github.kiolk.calendar.models.CalendarEvent;
+import com.github.kiolk.calendar.models.EventEnd;
+import com.github.kiolk.calendar.models.EventStart;
+import com.github.kiolk.calendar.models.EventType;
+import com.github.kiolk.calendar.models.UserCalendar;
+
+import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CalendarManager {
@@ -71,6 +81,52 @@ public class CalendarManager {
             }
         }
         Log.d("MyLogs", "Event id " + eventId);
+    }
+
+    public static <T> void addEventToCalender(Context pContext, T event, String pTimeZone) {
+        if (event instanceof CalendarEvent) {
+            addEventToCalender(pContext, ((CalendarEvent) event), pTimeZone);
+        }
+        Field[] fields = null;
+        String eventTitle = null;
+        Long startEvent = null;
+        Long endEvent = null;
+
+        try {
+            fields = Class.forName(event.getClass().getName()).getFields();
+        } catch (ClassNotFoundException pE) {
+            pE.printStackTrace();
+        }
+
+        for(Field field : fields){
+            if(field.getAnnotation(EventType.class) != null){
+                try {
+                    eventTitle = (String) field.get(event);
+                } catch (IllegalAccessException pE) {
+                    pE.printStackTrace();
+                }
+            }
+
+            if(field.getAnnotation(EventEnd.class) != null){
+                try {
+                    endEvent = (Long) field.get(event);
+                } catch (IllegalAccessException pE) {
+                    pE.printStackTrace();
+                }
+            }
+
+            if(field.getAnnotation(EventStart.class) != null){
+                try {
+                    startEvent = (Long) field.get(event);
+                } catch (IllegalAccessException pE) {
+                    pE.printStackTrace();
+                }
+            }
+        }
+        if(eventTitle != null && startEvent != null && endEvent != null){
+            CalendarEvent.Builder eventBuilder = new CalendarEvent.Builder(eventTitle, new Date(startEvent), new Date(endEvent));
+            addEventToCalender(pContext,eventBuilder.build() , pTimeZone);
+        }
     }
 
     public static void addEventToCalender(Context context, CalendarEvent pCalendarEvent, String timeZone) {
